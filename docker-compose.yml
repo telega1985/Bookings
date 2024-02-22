@@ -44,7 +44,7 @@ services:
     build:
       context: .
     container_name: booking_flower
-    command: sh -c "celery --app=app.tasks.celery:celery flower"
+    command: sh -c "celery --app=app.tasks.celery_app:celery flower"
     env_file:
       - .env-non-dev
     depends_on:
