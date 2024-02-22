@@ -27,10 +27,10 @@ from app.users.router import router_auth, router_users
 
 # Sentry
 
-sentry_sdk.init(
-    dsn="https://ad2122a2469f6d907679fae6161f74a8@o4505895820460032.ingest.sentry.io/4505895834877952",
-    enable_tracing=True,
-)
+# sentry_sdk.init(
+#     dsn="https://ad2122a2469f6d907679fae6161f74a8@o4505895820460032.ingest.sentry.io/4505895834877952",
+#     enable_tracing=True,
+# )
 
 # Redis cache
 
