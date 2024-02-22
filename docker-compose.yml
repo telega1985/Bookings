@@ -33,7 +33,7 @@ services:
     build:
       context: .
     container_name: booking_celery
-    command: [ "/booking/docker/celery.sh", "celery" ]
+    command: ["/booking/docker/celery.sh"]
     env_file:
       - .env-non-dev
     depends_on:
@@ -44,7 +44,7 @@ services:
     build:
       context: .
     container_name: booking_flower
-    command: [ "/booking/docker/celery.sh", "flower" ]
+    command: ["/booking/docker/flower.sh"]
     env_file:
       - .env-non-dev
     depends_on:
