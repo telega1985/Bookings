@@ -1,0 +1,10 @@
+[
+    {
+        "email": "telega.85@gmail.com",
+        "hashed_password": "$2b$12$B/Xa3EPG0HDtnlgEX7dO.eXlMwaiAvx3ySP5Wa5d6EQwllVDM7RDS"
+    },
+    {
+        "email": "test@test.com",
+        "hashed_password": "$2b$12$rYIpQQcsWz0iOVQNOSUhOO2ptlKPV6TRUBY86xx7vEUPXmIwQEne."
+    }
+]
