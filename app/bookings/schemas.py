@@ -1,5 +1,5 @@
 from datetime import date
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 
@@ -7,11 +7,6 @@ class SBookingCreate(BaseModel):
     room_id: int
     date_from: date
     date_to: date
-
-
-class SBookingBookedInfo(SBookingCreate):
-    id: int
-    user_id: int
 
 
 class SRoomsForBooking(BaseModel):
@@ -28,3 +23,18 @@ class SBookingWithRoom(SBookingCreate):
     total_cost: int
     total_days: int
     room: SRoomsForBooking
+
+
+class SUserWithBookings(BaseModel):
+    id: int
+    email: EmailStr
+    hashed_password: str
+
+
+class SBookingsWithUser(SBookingCreate):
+    id: int
+    user_id: int
+    price: int
+    total_cost: int
+    total_days: int
+    user: SUserWithBookings

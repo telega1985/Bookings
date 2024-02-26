@@ -27,10 +27,10 @@ from app.users.router import router_auth, router_users
 
 # Sentry
 
-# sentry_sdk.init(
-#     dsn="https://ad2122a2469f6d907679fae6161f74a8@o4505895820460032.ingest.sentry.io/4505895834877952",
-#     enable_tracing=True,
-# )
+sentry_sdk.init(
+    dsn="https://ad2122a2469f6d907679fae6161f74a8@o4505895820460032.ingest.sentry.io/4505895834877952",
+    enable_tracing=True,
+)
 
 # Redis cache
 
@@ -45,6 +45,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Бронирование отелей",
+    version="0.1.0",
     lifespan=lifespan
 )
 
@@ -73,7 +74,8 @@ app.include_router(router_importer)
 app = VersionedFastAPI(
     app,
     version_format="{major}",
-    prefix_format="/api/v{major}"
+    prefix_format="/api/v{major}",
+    lifespan=lifespan
 )
 
 # Prometheus

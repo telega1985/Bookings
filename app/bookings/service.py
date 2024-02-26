@@ -1,4 +1,4 @@
-from app.bookings.schemas import SBookingCreate, SBookingBookedInfo, SBookingWithRoom
+from app.bookings.schemas import SBookingCreate, SBookingWithRoom, SBookingsWithUser
 from app.database import async_session_maker
 from app.bookings.dao import BookingDAO
 from app.exceptions import RoomCannotBeBooked
@@ -16,7 +16,7 @@ class BookingService:
             return await BookingDAO.find_all_with_images(session, user_id)
 
     @classmethod
-    async def service_add_booking_db(cls, user: Users, booking: SBookingCreate) -> SBookingBookedInfo:
+    async def service_add_booking_db(cls, user: Users, booking: SBookingCreate):
         try:
             async with async_session_maker() as session:
                 rooms_left, price = await BookingDAO.get_rooms_booked(session, booking)
@@ -31,15 +31,11 @@ class BookingService:
 
                     await session.commit()
 
-                    booking_dict = SBookingBookedInfo(
-                        id=add_booking.id,
-                        user_id=add_booking.user_id,
-                        room_id=add_booking.room_id,
-                        date_from=add_booking.date_from,
-                        date_to=add_booking.date_to
-                    )
-                    booking_data_dict = booking_dict.model_dump()
-                    send_booking_confirmation_email.delay(booking_data_dict, user.email)
+                    booking_dict = {
+                        "date_from": add_booking.date_from,
+                        "date_to": add_booking.date_to
+                    }
+                    send_booking_confirmation_email.delay(booking_dict, user.email)
                     return booking_dict
                 else:
                     raise RoomCannotBeBooked
@@ -65,3 +61,8 @@ class BookingService:
         async with async_session_maker() as session:
             await BookingDAO.delete(session, id=booking_id, user_id=user_id)
             await session.commit()
+
+    @classmethod
+    async def service_find_need_to_remind(cls, days: int) -> list[SBookingsWithUser]:
+        async with async_session_maker() as session:
+            return await BookingDAO.find_need_to_remind(session, days)

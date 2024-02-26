@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status
 
-from app.bookings.schemas import SBookingCreate, SBookingBookedInfo, SBookingWithRoom
+from app.bookings.schemas import SBookingCreate, SBookingWithRoom
 from app.bookings.service import BookingService
 from app.users.dependencies import get_current_user
 from app.users.models import Users
@@ -17,7 +17,7 @@ async def get_bookings(user: Users = Depends(get_current_user)) -> list[SBooking
 
 
 @router_booking.post("", status_code=status.HTTP_201_CREATED)
-async def add_booking(booking: SBookingCreate, user: Users = Depends(get_current_user)) -> SBookingBookedInfo:
+async def add_booking(booking: SBookingCreate, user: Users = Depends(get_current_user)):
     return await BookingService.service_add_booking_db(user, booking)
 
 

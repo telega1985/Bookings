@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, and_, or_
 from sqlalchemy.orm import selectinload
@@ -17,6 +19,19 @@ class BookingDAO(BaseDAO):
             select(cls.model)
             .options(selectinload(cls.model.room))
             .where(cls.model.user_id == user_id)
+        )
+        result = await session.execute(query)
+        return result.scalars().all()
+
+    @classmethod
+    async def find_need_to_remind(cls, session: AsyncSession, days: int):
+        """
+        Список броней и пользователей, которым необходимо направить напоминание за days дней
+        """
+        query = (
+            select(cls.model)
+            .options(selectinload(cls.model.user))
+            .where(date.today() == cls.model.date_from - timedelta(days=days))
         )
         result = await session.execute(query)
         return result.scalars().all()
